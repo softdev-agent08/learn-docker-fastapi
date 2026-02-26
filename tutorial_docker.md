@@ -148,6 +148,15 @@ docker run testapp:1.0 bash
 ```
 
 ### Publishing Images
+1. First login in docker `docker login`
+2. `docker tag testapp:1.0 habiboss08/testapp:1.0`
+3. `docker push habiboss08/testapp:1.0`
+
+### Docker Volume
+<h6>
+  Volumes are <span style="color:red;">persistent</span> data stores for containers.
+</h6>
+
 
 ## Question 
     1. VM vs docker?
