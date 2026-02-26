@@ -54,8 +54,72 @@ docker run -d -p8081:8081 --name mongo-express --network mongo-network -e ME_CON
 ```
 
 ## Docker Compose
-    Docker Compose is a tool for defining and running multi-container applications
+<h6> Docker Compose is a tool for defining and running multi-container applications 
+</h6>
 
+    1. Create an .yaml file like
+```yaml
+        version: "3.8"
+            services:
+            mongo:
+                image: mongo:latest
+                container_name: mongo_test
+                ports:
+                - "27017:27017"
+                environment:
+                    MONGO_INITDB_ROOT_USERNAME: root
+                    MONGO_INITDB_ROOT_PASSWORD: example
+            mongo-express:
+                image: mongo-express:latest
+                container_name: mongo_express_test
+                ports:
+                - "8081:8081"
+                environment:
+                    ME_CONFIG_MONGODB_ADMINUSERNAME: admin
+                    ME_CONFIG_MONGODB_ADMINPASSWORD: qwerty
+                    ME_CONFIG_MONGODB_SERVER: mongodb://admin:qwerty@mongo:27017/
+                depends_on:
+                    - mongo
+```
+
+
+```bash
+docker compose -f file_name.yml up -d
+docker compose -f file_name.yml down
+docker network
+```
+
+## Dockerizing our App
+    test app -> docekr image -> container
+
+```python
+FROM python:3.13
+WORKDIR /usr/local/app
+
+# Install the application dependencies
+COPY requirements.txt ./
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy in the source code
+COPY src ./src
+EXPOSE 8080
+
+# Setup an app user so the container doesn't run as the root user
+RUN useradd app
+USER app
+
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8080"]
+```
+-----------------
+### Some Important dockerfile Infrustruction
+--------------------------
+- FROM
+- WORKDIR
+- COPY
+- RUN
+- CMD
+- EXPOSE
+- ENV
 --------------------------------------------
 ## Question 
     1. VM vs docker?
