@@ -121,6 +121,34 @@ CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8080"]
 - EXPOSE
 - ENV
 --------------------------------------------
+
+### Dockerfile
+```dockerfile
+FROM node:18
+
+ENV MONGO_DB_USERNAME=admin \
+    MONGO_DB_PWD=qwerty
+
+WORKDIR /testapp
+
+COPY package*.json ./
+RUN npm install
+
+COPY . .
+
+CMD ["node", "server.js"]
+```
+
+```bash
+docker build -t testapp:1.0 .  #build docker app
+docker images
+docker run testapp:1.0
+docker run testapp:1.0 bash
+
+```
+
+### Publishing Images
+
 ## Question 
     1. VM vs docker?
     2. 
